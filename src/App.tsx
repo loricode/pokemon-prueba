@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from "react-redux"
+import { PokemonService } from './app/services/PokemonService';
+import { useEffect } from 'react';
+import { apiPokemon } from './app/api/apiPokemon';
 
-function App() {
+interface Pokemon{
+  name:string,
+  url:string
+}
+
+function App({apiPokemon, state}:any) {
+
+  useEffect(() => {
+    (async function (){
+      const response = await PokemonService.service.getPokemons()
+    console.log(response)
+    apiPokemon(response['results'])    
+    })();   
+  },[apiPokemon]) 
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+       <div className="row">
+         <div className="col-md-8">
+               <div className="row">
+                 {state.listPokemon.map((item:Pokemon, i:number) => (
+                  <div className="col-md-4" key={i}>
+                     <div className="card">
+                        <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`} alt={item.name}/>
+                     </div>
+                  </div>
+                      ))  }
+               </div>
+         </div>
+         
+         <div className="col-md-4">
+              
+         </div>
+
+       </div>
+       
     </div>
   );
 }
 
-export default App;
+
+
+const mapStateToProps = (state:any) => {
+  return {
+    state: state.PokemonReducer as any[]
+   };
+};
+
+const mapDispatchToProps = {
+  apiPokemon
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

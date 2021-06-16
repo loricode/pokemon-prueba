@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunkMiddleware from 'redux-thunk';
+
+import { PokemonReducer } from './app/views/reducer/pokemonReducer';
+
+let reducers = combineReducers({PokemonReducer})
+
+const store = createStore(reducers, composeWithDevTools(
+  applyMiddleware(thunkMiddleware)
+));
+  
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
