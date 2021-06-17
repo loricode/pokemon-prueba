@@ -16,4 +16,10 @@ export class PokemonService{
     public async getPokemons() {
 		return  (await _http.get<any>(this.ulrbase+"/pokemon?limit=50")).data;
 	}
+
+  public async getPokemon(id:string) {
+		return  (await _http.get<any>(this.ulrbase+`/pokemon/${id}`)).data;
+	}
+
+
 }
