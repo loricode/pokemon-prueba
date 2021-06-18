@@ -38,7 +38,7 @@ function App({ apiPokemon, state }: any) {
   useEffect(() => {
     (async function () {
       const response = await PokemonService.service.getPokemons()
-      console.log(response)
+      console.log("dentro del useEffect ",response)
       apiPokemon(response['results'])
     })();
   }, [apiPokemon])
@@ -48,9 +48,8 @@ function App({ apiPokemon, state }: any) {
 
     const response = await PokemonService.service.getPokemon(idpokemon);
     const { id, name, abilities, types, sprites } = response
-    console.log(response)
+    console.log("buscando por id: ",response)
     setDetail({
-      ...detail,
       idPokemon: id,
       PokemonName: name,
       ability: abilities,
@@ -79,18 +78,17 @@ function App({ apiPokemon, state }: any) {
       <div className="row">
         <div className="col-md-8">
           <InfiniteScroll
-            dataLength={state.listPokemon.length} //This is important field to render the next data
+            dataLength={state.listPokemon.length}
             next={state.listPokemon}
             hasMore={true}
             initialScrollY={5}
-            loader={<h4></h4>}
+            loader={<h4>..</h4>}
             endMessage={
               <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
               </p>
             }
             height={580}
-            // below props only if you need pull down functionality
             refreshFunction={refresh}
             pullDownToRefresh
             pullDownToRefreshThreshold={10}
